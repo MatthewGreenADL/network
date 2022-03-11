@@ -1,0 +1,47 @@
+def initPlotStyle():
+
+    from rootpy.plotting.style  import get_style, set_style
+    from rootpy.plotting import Hist
+    import rootpyglobals
+    from rootpy import ROOT
+
+    style = get_style('ATLAS')
+    style.SetTitleSize(rootpyglobals.titlesize, "x")
+    style.SetTitleSize(rootpyglobals.titlesize,"y")
+    style.SetTitleYOffset(1)
+    style.SetTitleXOffset(1)
+    set_style(style)
+
+    ROOT.gStyle.SetPadBottomMargin(0.)
+    ROOT.gStyle.SetLineWidth(2)
+    ROOT.gStyle.SetLegendBorderSize(0)
+    #ROOT.gStyle.SetFrameLineWidth(2)
+    ROOT.gROOT.SetBatch(True)
+    Hist.SetDefaultSumw2(True)
+    ROOT.gStyle.SetErrorX(0.5)
+
+def setSampleStyle(temphist,sample,sampleDictionary):
+    """
+    Handles the fill color of the histograms of each years sample.
+    """
+    fillcolor = sampleDictionary[sample]['fillcolor']
+
+    type = sampleDictionary[sample]['type']
+
+    samplestyleDictionary = {
+    'bkg' : {'plottype':'hist','filltype':'0'    ,'linewidth':3}, #{'plottype':'hist','filltype':'solid','linecolor':0,'linewidth':0},
+    'sig' : {'plottype':'hist','filltype':'0'    ,'linewidth':3},
+    'fakes': {'plottype':'hist','filltype':'0'    ,'linewidth':3}, # {'plottype':'hist','filltype':'solid','linecolor':0,'linewidth':0},
+    'data': {'plottype':'hist','filltype':'0'    ,'linewidth':3} # {'plottype':'EP'  ,'filltype':'0'    ,'linecolor':'black','linewidth':3}
+    }
+    temphist.drawstyle = samplestyleDictionary[type]['plottype']
+    temphist.fillcolor = sampleDictionary[sample]['fillcolor']
+    temphist.fillstyle = samplestyleDictionary[type]['filltype']
+    try:
+        temphist.linecolor = sampleDictionary[sample]['linecolor']
+    except KeyError:
+        temphist.linecolor = 0
+
+    temphist.linewidth = samplestyleDictionary[type]['linewidth']
+    temphist.linestyle = 'solid'
+
