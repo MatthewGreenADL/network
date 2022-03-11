@@ -1,0 +1,7 @@
+import os 
+
+regionname   = "PRE3L"
+outputfolder = "output_local/network/"
+year = "1516"
+
+os.system("python source/plotter_network.py --dataperiods " + year +  " --region " + regionname +  " --output " + outputfolder)
